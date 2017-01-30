@@ -1,0 +1,57 @@
+nav, footer {
+	background-color: #0288d1 !important;
+}
+
+.nav-wrapper {
+	text-align: center;
+}
+
+.cv-header h1,
+.cv-header h2 {
+	text-align: center;
+}
+
+.cv-header h1 {
+	font-size: 3em;
+}
+
+.cv-header h2 {
+	font-size: 2em;
+}
+
+.cv-photo {
+	padding: 10px;
+}
+
+.cv-photo img {
+	display: block;
+}
+
+
+.cv-item {
+	padding: 15px;
+}
+
+.cv-item h2 {
+	font-size: 2em;
+	text-align: center;
+}
+
+.language-block h3 {
+	font-size: 1.5em;
+}
+
+.language-block img {
+	display: block;
+	margin: auto;
+	max-width: 100px;
+}
+
+.ft-content {
+	padding-bottom: 10px;
+	color: white;
+}
+
+.ft-content a {
+	color: white;
+}
