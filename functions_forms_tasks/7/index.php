@@ -20,27 +20,50 @@ function addComment($arr){
 	$arr[] = array(trim($_POST['userName']) => trim($_POST['userComment']));
 }
 
-
 function debug($a){
 	echo "<pre>";
 	var_dump($a);
 	echo "</pre>";
 }
 
+function saveComment($file, array $comment){
+	$comments = file_get_contents($file) . json_encode($comment) . PHP_EOL;
+	file_put_contents($file, $comments);
+}
+
+function getCommentsArr($file){
+	$comments = file_get_contents($file);
+	$result = [];
+	if ($comments) {
+		$comments = array_filter(explode(PHP_EOL, $comments));
+		foreach ($comments as $key => $commentString) {
+			$result[$key] = json_decode($commentString, true);
+		}
+	}
+	return $result;
+}
 
 
 
 //logic
+$fileComments = './comments.txt';
 $errorMessage = '';
 
-$allComments = [];
+//get saved comments from file
+$allComments = getCommentsArr($fileComments);
 
-
+//add new comment
 if(isRequestPost()) {
 	if(isFormNotEmpty()) {
-		//addComment($allComments);
-		//debug($allComments);
-		$allComments[] = array(trim($_POST['userName']) => trim($_POST['userComment']));
+		$newComment = array(
+			'id' => uniqid(),
+			'userName' => trim($_POST['userName']),
+			'userComment' => trim($_POST['userComment'])
+			);
+
+		saveComment($fileComments, $newComment);
+		//get comments again
+		$allComments = getCommentsArr($fileComments);
 	} else {
 		$errorMessage = "Form is invalid";
 	}
@@ -69,15 +92,11 @@ if(isRequestPost()) {
 	<h1>Comments here</h1>
 	
 	<div class="comments">
-		
 		<?php foreach($allComments as $index=>$userData): ?>
 		<div class="comment">
-
-			<?php foreach($userData as $key=>$value): ?>
-				<h4><?php echo $key; ?></h4>
-				<span><?php echo $value; ?></span>
-			<?php endforeach; ?>
-
+			<h4><?=$userData["userName"]; ?></h4>
+			<span><?=$userData["userComment"]; ?></span><br>
+			<a href=<?="./?action=post&id=".$userData["id"].'"'; ?>>delete</a>
 		</div>
 		<?php endforeach; ?>
 
@@ -100,11 +119,6 @@ if(isRequestPost()) {
 	<br>
 
 	<h3><?=$errorMessage?></h3>
-	<h3></h3>
-	
-	<?php debug($allComments); ?>
-
-
 
 
 </body>
