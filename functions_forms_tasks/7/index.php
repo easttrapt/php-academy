@@ -8,6 +8,7 @@ function isRequestPost(){
 	return (bool) $_POST;
 }
 
+
 function isFormNotEmpty(){
 	return trim($_POST['userName']) && trim($_POST['userComment']);
 }
@@ -19,6 +20,31 @@ function requestPost($key, $template = ''){
 function addComment($arr){
 	$arr[] = array(trim($_POST['userName']) => trim($_POST['userComment']));
 }
+
+//for delete
+function isRequestGet(){
+	return (bool) $_GET;
+}
+
+function isActionDelete(){
+	return $_GET['action'] == 'delete' && $_GET['id'];
+}
+
+function deleteComment($file, $id){
+	$comments = getCommentsArr($file);
+	foreach ($comments as $key => $comment) {
+		if ($comments[$key]["id"] == $id) {
+			unset($comments[$key]);
+		}
+	}
+	//сохраняю в json
+	foreach ($comments as $key => $comment) {
+		$comments[$key] = json_encode($comment);
+	}
+	$comments = implode(PHP_EOL, $comments);
+	file_put_contents($file, $comments);
+}
+
 
 function debug($a){
 	echo "<pre>";
@@ -69,6 +95,17 @@ if(isRequestPost()) {
 	}
 }
 
+//delete comment
+if(isRequestGet()){
+	if(isActionDelete()){
+		deleteComment($fileComments, $_GET['id']);
+		//get comments again
+		$allComments = getCommentsArr($fileComments);
+	} else {
+		$errorMessage = "Cant delete";
+	}
+}
+
 ?>
 
 <!DOCTYPE html>
@@ -96,7 +133,7 @@ if(isRequestPost()) {
 		<div class="comment">
 			<h4><?=$userData["userName"]; ?></h4>
 			<span><?=$userData["userComment"]; ?></span><br>
-			<a href=<?="./?action=post&id=".$userData["id"].'"'; ?>>delete</a>
+			<a href=<?="./?action=delete&id=".$userData["id"]; ?>>delete</a>
 		</div>
 		<?php endforeach; ?>
 
@@ -119,7 +156,6 @@ if(isRequestPost()) {
 	<br>
 
 	<h3><?=$errorMessage?></h3>
-
 
 </body>
 </html>
