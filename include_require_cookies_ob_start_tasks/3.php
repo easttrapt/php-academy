@@ -86,7 +86,7 @@ function getColorCookies(){
 $userMessage = array("class" => "", "text" => "");;
 $flashMessage = array("class" => "hide", "text" => "");
 //цвета
-$optionsColors = [ "disabled", "green", "red", "blue", "yellow", "black"];
+$optionsColors = [ "disabled", "green", "red", "blue", "yellow", "black", "pink"];
 
 
 $userColor = getColorCookies();
@@ -150,8 +150,8 @@ if(isRequestPost()) {
 		
 		<button>Send</button>
 	</form>
-	
-	<h3 class=<?="'".$userMessage["class"]."'"?>><?=$userMessage["text"]?></h3>
+
+	<h3 style=<?="color:".$userMessage["class"]?>><?=$userMessage["text"]?></h3>
 
 	<h3 class=<?="'".$flashMessage["class"]."'" ?>><?=$flashMessage["text"] ?></h3>
 
