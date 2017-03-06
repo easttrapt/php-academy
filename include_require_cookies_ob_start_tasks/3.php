@@ -111,27 +111,6 @@ if(isRequestPost()) {
 <head>
 	<meta charset="UTF-8">
 	<title>Cookie Color</title>
-	<style>
-		.green{
-			color: green;
-		}
-		.red{
-			color: red;
-		}
-		.blue{
-			color: blue;
-		}
-		.yellow{
-			color: yellow;
-		}
-		.black{
-			color: black;
-		}
-		.gray{
-			color: gray;
-		}
-	</style>
-
 </head>
 <body>
 	<h1>Cookie Color</h1>
